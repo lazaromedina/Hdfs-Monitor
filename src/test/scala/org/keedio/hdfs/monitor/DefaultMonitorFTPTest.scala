@@ -27,11 +27,11 @@ class DefaultMonitorFTPTest {
             builder.setPassiveMode(opts, false)
 
             //just accesing ftp server
-            val fileObject = fsManager.resolveFile("ftp://mortadelo:filemon@10.129.135.108/home/mortadelo/ftp/directorio0", opts)
+            val fileObject = fsManager.resolveFile("ftp://mortadelo:filemon@10.129.135.108/home/mortadelo/ftp/", opts)
             val children = fileObject.getChildren
             children.foreach(f => println(f.getName.getBaseName))
 
-            val file1 = fsManager.resolveFile("ftp://mortadelo:filemon@10.129.135.108/home/mortadelo/ftp/directorio0/file1.txt", opts)
+            val file1 = fsManager.resolveFile("ftp://mortadelo:filemon@10.129.135.108/home/mortadelo/ftp/file4.txt", opts)
 
             //monitoring
             val listendir: FileObject = fsManager.resolveFile("ftp://mortadelo:filemon@10.129.135.108/home/mortadelo/ftp", opts)
@@ -50,7 +50,7 @@ class DefaultMonitorFTPTest {
             fm.start()
 
             try {
-                //file1.createFile()
+                file1.createFile()
                 Thread.sleep(1000)
                 file1.delete()
             } catch {
