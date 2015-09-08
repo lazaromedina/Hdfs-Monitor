@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.keedio.hdfs.monitor</groupId>
+  <artifactId>Hdfs-Monitor</artifactId>
+  <name>Hdfs-Monitor</name>
+  <version>0.0.1-SNAPSHOT</version>
+  <description>Keedio's Hdfs-Monitor is a functionality for watching hdfs paths for changes using Apache
+    Commons Vfs2 Library.</description>
+  <url>https://github.com/keedio/Hdfs-Monitor</url>
+  <developers>
+    <developer>
+      <name>Luis Lázaro Medina</name>
+      <email>lalazaro@keedio.org</email>
+      <organization>Keedio</organization>
+      <organizationUrl>http://www.keedio.com</organizationUrl>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <recompileMode>incremental</recompileMode>
+          <javacArgs>
+            <javacArg>-Xlint:unchecked</javacArg>
+            <javacArg>-Xlint:deprecation</javacArg>
+          </javacArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>hamcrest-core</artifactId>
+          <groupId>org.hamcrest</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>2.10.4</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <properties>
+    <slf4j.version>1.7.12</slf4j.version>
+    <junit.version>4.11</junit.version>
+    <java.version>1.7</java.version>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hadoop.version>2.2.0</hadoop.version>
+    <scala.version>2.10.4</scala.version>
+    <maven.compiler.source>1.7</maven.compiler.source>
+  </properties>
+</project>
+
