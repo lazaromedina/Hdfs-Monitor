@@ -21,43 +21,45 @@ import org.junit._
 
 class DefaultMonitorTest {
 
-    /**
-     * Test api for monitoring changes in directory. The filesystem uses is local file system. On starting the
-     * DefaultMonitor instance, a file is create, this one is modified via append, and lastly the file is deletec,
-     * with an interval of one second between actions. The listener receives the events and fires an action according
-     * the event.
-     */
-    @Test
-    def testApiFileMonitorLocalFileSystem(): Unit = {
-        val userPath = System.getProperty("user.dir")
-        val fileSeparator = System.getProperty("file.separator")
-        val fsManager = VFS.getManager
-        val listendir: FileObject = fsManager.resolveFile(userPath + fileSeparator + "src/test/resources/")
+      /**
+       * Test api for monitoring changes in directory. The filesystem uses is local file system. On starting the
+       * DefaultMonitor instance, a file is create, this one is modified via append, and lastly the file is deletec,
+       * with an interval of one second between actions. The listener receives the events and fires an action according
+       * the event.
+       */
+      @Test
+      def testApiFileMonitorLocalFileSystem(): Unit = {
+            val userPath = System.getProperty("user.dir")
+            val fileSeparator = System.getProperty("file.separator")
+            val fsManager = VFS.getManager
+            val listendir: FileObject = fsManager.resolveFile(userPath + fileSeparator + "src/test/resources/")
 
-        val fm = new DefaultFileMonitor(new FileListener {
-            override def fileCreated(fileChangeEvent: FileChangeEvent): Unit = assert(true)
-            override def fileChanged(fileChangeEvent: FileChangeEvent): Unit = assert(true)
-            override def fileDeleted(fileChangeEvent: FileChangeEvent): Unit = assert(true)
+            val fm = new DefaultFileMonitor(new FileListener {
+                  override def fileCreated(fileChangeEvent: FileChangeEvent): Unit = assert(true)
 
-        })
+                  override def fileChanged(fileChangeEvent: FileChangeEvent): Unit = assert(true)
 
-        fm.setRecursive(true)
-        fm.addFile(listendir)
-        fm.setDelay(1) //if not set or set to 0 seconds, file changed is not fired so it is not detected.
-        fm.start()
+                  override def fileDeleted(fileChangeEvent: FileChangeEvent): Unit = assert(true)
 
-        try {
-            Files.createFile(Paths.get(userPath + fileSeparator + "src/test/resources/file_Created1.csv"))
-            Thread.sleep(1000)
-            Files.write(Paths.get(userPath + fileSeparator + "src/test/resources/file_Created1.csv"), ("Contenido de" +
-                " fichero\n").getBytes(), StandardOpenOption.APPEND);
-            Thread.sleep(1000)
-            Files.deleteIfExists(Paths.get(userPath + fileSeparator + "src/test/resources/file_Created1.csv"))
-            Thread.sleep(1000)
-        } catch {
-            case e: IOException => println("I/O: ", e)
-        }
-        fm.stop()
-    }
+            })
+
+            fm.setRecursive(true)
+            fm.addFile(listendir)
+            fm.setDelay(1) //if not set or set to 0 seconds, file changed is not fired so it is not detected.
+            fm.start()
+
+            try {
+                  Files.createFile(Paths.get(userPath + fileSeparator + "src/test/resources/file_Created1.csv"))
+                  Thread.sleep(1000)
+                  Files.write(Paths.get(userPath + fileSeparator + "src/test/resources/file_Created1.csv"), ("Contenido de" +
+                        " fichero\n").getBytes(), StandardOpenOption.APPEND);
+                  Thread.sleep(1000)
+                  Files.deleteIfExists(Paths.get(userPath + fileSeparator + "src/test/resources/file_Created1.csv"))
+                  Thread.sleep(1000)
+            } catch {
+                  case e: IOException => println("I/O: ", e)
+            }
+            fm.stop()
+      }
 
 }

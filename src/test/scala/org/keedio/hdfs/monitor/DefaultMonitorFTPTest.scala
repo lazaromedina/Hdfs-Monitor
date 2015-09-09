@@ -14,11 +14,11 @@ import org.junit._
  */
 class DefaultMonitorFTPTest {
 
-        /**
-         * Test vfs2 on FTP filesytem
-         */
-        @Test
-        def testApiFileMonitorFTPFileSystem(): Unit = {
+      /**
+       * Test vfs2 on FTP filesytem
+       */
+      @Test
+      def testApiFileMonitorFTPFileSystem(): Unit = {
             val fsManager = VFS.getManager
 
             val opts: FileSystemOptions = new FileSystemOptions()
@@ -37,11 +37,11 @@ class DefaultMonitorFTPTest {
             val listendir: FileObject = fsManager.resolveFile("ftp://mortadelo:filemon@10.129.135.108/home/mortadelo/ftp", opts)
 
             val fm = new DefaultFileMonitor(new FileListener {
-                override def fileDeleted(fileChangeEvent: FileChangeEvent): Unit = println("file deleted")
+                  override def fileDeleted(fileChangeEvent: FileChangeEvent): Unit = println("file deleted")
 
-                override def fileChanged(fileChangeEvent: FileChangeEvent): Unit = println("file changed")
+                  override def fileChanged(fileChangeEvent: FileChangeEvent): Unit = println("file changed")
 
-                override def fileCreated(fileChangeEvent: FileChangeEvent): Unit = println("file created")
+                  override def fileCreated(fileChangeEvent: FileChangeEvent): Unit = println("file created")
             })
 
             fm.setRecursive(true)
@@ -50,14 +50,14 @@ class DefaultMonitorFTPTest {
             fm.start()
 
             try {
-                file1.createFile()
-                Thread.sleep(1000)
-                file1.delete()
+                  file1.createFile()
+                  Thread.sleep(1000)
+                  file1.delete()
             } catch {
-                case e: IOException => println("I/O: ", e)
+                  case e: IOException => println("I/O: ", e)
             }
 
             fm.stop()
 
-        }
+      }
 }
