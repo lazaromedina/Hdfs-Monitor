@@ -7,7 +7,6 @@ import org.junit.Test
 
 
 
-
 /**
  * Created by luislazaro on 8/9/15.
  * lalazaro@keedio.com
@@ -27,7 +26,7 @@ class DefaultMonitorHDFSTest {
         hdfsBuilder.setConfigName(opts, "hdfsSystem")
 
         //just accesing hdfs system
-        val fileObject = fsManager.resolveFile("hdfs://10.129.135.140:8020/tmp", opts)
+        val fileObject: FileObject = fsManager.resolveFile("hdfs://10.129.135.140:8020/tmp", opts)
         val children: Array[FileObject] = fileObject.getChildren
         children.foreach(f => println(f.getName.getBaseName))
 
@@ -51,10 +50,6 @@ class DefaultMonitorHDFSTest {
 
     }
 
-    @Test
-    def testMiniDFSCluster():Unit = {
-        MiniDFSCluster
-    }
 
 
 }
