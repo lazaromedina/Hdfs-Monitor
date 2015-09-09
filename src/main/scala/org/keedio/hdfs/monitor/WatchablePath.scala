@@ -13,7 +13,7 @@ import java.util.concurrent.{ScheduledExecutorService, ScheduledFuture, TimeUnit
  * Keedio
  */
 
-class WatchService(csvDir: String, refresh: Int, start: Int, regex: Regex) {
+class WatchablePath(csvDir: String, refresh: Int, start: Int, regex: Regex) {
 
       private val fsManager = VFS.getManager
       private val pathForMonitor: FileObject = fsManager.resolveFile(csvDir)
@@ -23,6 +23,7 @@ class WatchService(csvDir: String, refresh: Int, start: Int, regex: Regex) {
 
       //observer for changes to a file
       private val fileListener = new FileListener {
+
             override def fileDeleted(fileChangeEvent: FileChangeEvent): Unit = fireEvent(fileChangeEvent)
 
             override def fileChanged(fileChangeEvent: FileChangeEvent): Unit = fireEvent(fileChangeEvent)
@@ -36,6 +37,7 @@ class WatchService(csvDir: String, refresh: Int, start: Int, regex: Regex) {
       defaultMonitor.setRecursive(true)
       defaultMonitor.setDelay(secondsToMiliseconds(refresh))
 
+
       // the number of threads to keep in the pool, even if they are idle
       private val corePoolSize = 1
       private val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(corePoolSize)
@@ -47,10 +49,15 @@ class WatchService(csvDir: String, refresh: Int, start: Int, regex: Regex) {
       )
 
       /**
-       * call this method whenever you want to notify the event listeners about a particular event
+       * Call this method whenever you want to notify the event listeners about a
+       * FileChangeEvent.
+       * Filtering monitored files via regex is made after and event is fired.
        */
       def fireEvent(fileChangeEvent: FileChangeEvent): Unit = {
-            listeners foreach (_.statusReceived(fileChangeEvent))
+            regex.findFirstIn(fileChangeEvent.getFile.getName.getBaseName).isDefined match {
+                  case true => listeners foreach (_.statusReceived(fileChangeEvent))
+                  case false => ()
+            }
       }
 
       /**
@@ -80,7 +87,7 @@ class WatchService(csvDir: String, refresh: Int, start: Int, regex: Regex) {
        * @param seconds
        * @return
        */
-      //FIXME:not sure this is right becacuse may change all Int to Long ???
+      //FIXME:not sure this is right because may change all Int to Long ???
       implicit def secondsToMiliseconds(seconds: Int): Long = {
             seconds * 10 ^ (-3)
       }
